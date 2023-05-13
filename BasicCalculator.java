@@ -7,9 +7,9 @@ import javax.swing.JTextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class calculator implements ActionListener {
+public class BasicCalculator implements ActionListener {
 
-    // Declaring all the GUI elements
+    // Declaring all GUI elements
     private static JFrame frame;
     private static JPanel panel;
     private static JButton button;
@@ -37,7 +37,7 @@ public class calculator implements ActionListener {
         // Calculate button
         button = new JButton("Calculate");
         button.setBounds(60, 100, 150, 30);
-        button.addActionListener(new calculator()); // action listener
+        button.addActionListener(new BasicCalculator()); // action listener
         panel.add(button);
 
         // Text fields for numbers
@@ -49,7 +49,7 @@ public class calculator implements ActionListener {
         panel.add(num2);
 
         // Drop-down menu for operations
-        String[] operations = { "+", "-", "*", "/" };
+        String[] operations = { "+", "-", "\u00D7", "\u00F7" };
         box = new JComboBox<String>(operations);
         box.setBounds(185, 50, 65, 30);
         panel.add(box);
@@ -66,43 +66,44 @@ public class calculator implements ActionListener {
 
     }
 
-    // Logic of the calculator
+    // Calculator logic
     @Override
     public void actionPerformed(ActionEvent e) {
-        if ((num1.getText().equals("")) || (num2.getText().equals(""))) {
+        if ((num1.getText().equals("")) || (num2.getText().equals(""))) { // Error handling
             result.setText("Both operands required!");
 
-        } else if (!(num1.getText().matches("[0-9.0-9]+")) || !(num2.getText().matches("[0-9.0-9]+"))) { // find regex
-                                                                                                         // that
-            // accepts decimals
-            // along with numbers
+        } else if (!(num1.getText().matches("[0-9.0-9]+")) || !(num2.getText().matches("[0-9.0-9]+"))) {
             result.setText("Only numbers are acceptable!");
 
         } else {
             float number1 = Float.parseFloat(num1.getText().trim());
             float number2 = Float.parseFloat(num2.getText().trim());
 
+            // Addition
             if (box.getSelectedItem().equals("+")) {
                 float sum = Float.sum(number1, number2);
                 result.setText(number1 + " + " + number2 + " = " + String.valueOf(sum));
             }
 
+            // Subtraction
             else if (box.getSelectedItem().equals("-")) {
                 float subtraction = number1 - number2;
                 result.setText(number1 + " - " + number2 + " = " + String.valueOf(subtraction));
             }
 
-            else if (box.getSelectedItem().equals("*")) {
+            // Multiplication
+            else if (box.getSelectedItem().equals("\u00D7")) {
                 float multiplication = number1 * number2;
-                result.setText(number1 + " * " + number2 + " = " + String.valueOf(multiplication));
+                result.setText(number1 + " \u00D7 " + number2 + " = " + String.valueOf(multiplication));
             }
 
+            // Division
             else {
                 if (number2 == 0) {
-                    result.setText("Divisor cannot be 0");
+                    result.setText("Divisor cannot be 0"); // Error handling
                 } else {
                     float division = number1 / number2;
-                    result.setText(number1 + " / " + number2 + " = " + String.valueOf(division));
+                    result.setText(number1 + " \u00F7 " + number2 + " = " + String.valueOf(division));
                 }
             }
         }
